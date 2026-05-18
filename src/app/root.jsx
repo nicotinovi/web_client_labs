@@ -1,3 +1,6 @@
+import { ProductsList } from '../parts/products/ProductsList'
+import { NewProductForm } from '../parts/products/NewProductForm'
+
 function Root() {
 	return (
 		<div id="main">
@@ -7,9 +10,11 @@ function Root() {
 					<a>Sellers</a>
 				</nav>
 			</div>
-			<div id="main_page">
-				<h2>This is my first Redux app!</h2>
+			<div id="main-page">
+				<h2>My Products App</h2>
 				<hr></hr>
+				<NewProductForm />
+				<ProductsList />
 			</div>
 		</div>
 	)
