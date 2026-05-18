@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { nanoid } from '@reduxjs/toolkit'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { productAdded } from './productsSlice'
 
 export const NewProductForm = () => {
@@ -8,25 +7,20 @@ export const NewProductForm = () => {
 	const [desc, setDesc] = useState('')
 	const [price, setPrice] = useState(0)
 	const [amount, setAmount] = useState(0)
+	const [sellerId, setSellerId] = useState('')
 
 	const dispatch = useDispatch()
+	const sellers = useSelector((state) => state.sellers)
 
 	const onNameChanged = (e) => setName(e.target.value)
 	const onDescChanged = (e) => setDesc(e.target.value)
 	const onPriceChanged = (e) => setPrice(e.target.value)
 	const onAmountChanged = (e) => setAmount(e.target.value)
+	const onSellerChanged = (e) => setSellerId(e.target.value)
 
 	const onSaveProductClick = () => {
 		if (name && desc && price && amount) {
-			dispatch(
-				productAdded({
-					id: nanoid(),
-					name,
-					desc,
-					price,
-					amount,
-				})
-			)
+			dispatch(productAdded(name, desc, price, amount, sellerId))
 
 			setName('')
 			setDesc('')
@@ -34,6 +28,12 @@ export const NewProductForm = () => {
 			setAmount(0)
 		}
 	}
+
+	const sellersList = sellers.map((seller) => (
+		<option key={seller.id} value={seller.id}>
+			{seller.name}
+		</option>
+	))
 
 	return (
 		<div>
@@ -47,6 +47,13 @@ export const NewProductForm = () => {
 						value={name}
 						onChange={onNameChanged}
 					/>
+				</p>
+				<p>
+					<label htmlFor="prodSeller">Seller:</label>
+					<select id="prodSeller" value={sellerId} onChange={onSellerChanged}>
+						<option value=""></option>
+						{sellersList}
+					</select>
 				</p>
 				<p>
 					<label htmlFor="productDesc">Description:</label>
